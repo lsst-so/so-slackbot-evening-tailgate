@@ -1,21 +1,22 @@
-.sconsign.dblite
-config.log
-.sconf_temp
-*.o
-*.os
-*.so
-*.cfgc
-*.pyc
-*_wrap.cc
-*Lib.py
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
 
-# Built by sconsUtils
-version.py
-bin/
+# Local environment / secrets
+.env
 
-# Pytest
-tests/.tests
-pytest_session.txt
-.cache/
-.pytest_cache
+# Local SQLite state
+*.db
+tailgate_state.db
+
+# Pytest / coverage
+.pytest_cache/
 .coverage
+pytest_session.txt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
