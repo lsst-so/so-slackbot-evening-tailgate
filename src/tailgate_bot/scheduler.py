@@ -1,4 +1,5 @@
 """APScheduler wiring for the two daily jobs, in the configured timezone."""
+from functools import partial
 from zoneinfo import ZoneInfo
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -22,15 +23,17 @@ def build_scheduler(client, cfg: Config, store: StateStore) -> BackgroundSchedul
     c_hour, c_min = _parse_hhmm(cfg.cutoff_time)
 
     scheduler.add_job(
-        lambda: jobs.post_reminder(client, cfg, store),
+        partial(jobs.post_reminder, client, cfg, store),
         CronTrigger(hour=r_hour, minute=r_min, timezone=tz, day_of_week="mon-sun"),
         id="tailgate_reminder",
+        name="tailgate_reminder",
         replace_existing=True,
     )
     scheduler.add_job(
-        lambda: jobs.check_cutoff(client, cfg, store),
+        partial(jobs.check_cutoff, client, cfg, store),
         CronTrigger(hour=c_hour, minute=c_min, timezone=tz, day_of_week="mon-sun"),
         id="tailgate_cutoff",
+        name="tailgate_cutoff",
         replace_existing=True,
     )
     return scheduler
