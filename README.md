@@ -11,16 +11,21 @@ inbound port required, so it works fine behind the observatory firewall.
 
 1. Go to https://api.slack.com/apps → **Create New App** → **From scratch**.
 2. Name it (e.g. "Tailgate Bot") and pick your workspace.
-3. **Socket Mode**: under *Settings → Socket Mode*, turn it on. This generates an
-   app-level token — copy it (starts with `xapp-`) into `SLACK_APP_TOKEN`.
-4. **Bot scopes**: under *Features → OAuth & Permissions → Scopes → Bot Token Scopes*, add:
+3. **Socket Mode**: under *Settings → Socket Mode*, turn it on.
+4. **App-level token**: under *Settings → Basic Information → App-Level Tokens*,
+   click **Generate Token and Scopes**, name it (e.g. `socket-mode`), add the
+   **`connections:write`** scope, and generate. Copy the token (starts with
+   `xapp-`, shown only once) into `SLACK_APP_TOKEN`. Turning on Socket Mode may
+   prompt you to create this token directly; if it didn't, this is where it
+   lives.
+5. **Bot scopes**: under *Features → OAuth & Permissions → Scopes → Bot Token Scopes*, add:
    - `chat:write` (post and update messages)
    - `usergroups:read` (check who's in the day-shift user group)
-5. **Interactivity**: under *Features → Interactivity & Shortcuts*, turn it on. With
+6. **Interactivity**: under *Features → Interactivity & Shortcuts*, turn it on. With
    Socket Mode enabled you don't need a Request URL.
-6. Install the app to your workspace (*Settings → Install App*). Copy the **Bot User OAuth
+7. Install the app to your workspace (*Settings → Install App*). Copy the **Bot User OAuth
    Token** (starts with `xoxb-`) into `SLACK_BOT_TOKEN`.
-7. Invite the bot to the tailgate channel: `/invite @Tailgate Bot`.
+8. Invite the bot to the tailgate channel: `/invite @Tailgate Bot`.
 
 ## 2. Get the channel ID and user group ID
 
