@@ -1,0 +1,2 @@
+slack-bolt>=1.19,<2
+APScheduler>=3.10,<4

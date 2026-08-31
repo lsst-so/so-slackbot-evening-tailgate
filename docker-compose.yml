@@ -1,0 +1,13 @@
+services:
+  tailgate-bot:
+    build: .
+    image: tailgate-bot:latest
+    container_name: tailgate-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - tailgate-data:/data
+
+volumes:
+  tailgate-data:
