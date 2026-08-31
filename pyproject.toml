@@ -12,6 +12,8 @@ license = { text = "GPL-3.0-or-later" }
 dependencies = [
     "slack-bolt>=1.19,<2",
     "APScheduler>=3.10,<4",
+    # zoneinfo needs a tz database; slim container images don't ship one.
+    "tzdata",
 ]
 
 [project.optional-dependencies]
