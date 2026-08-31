@@ -31,6 +31,12 @@ def _is_authorized(client, user_id: str) -> bool:
     return user_id in resp.get("users", [])
 
 
+def _dm_user(client, user_id: str, text: str) -> None:
+    """DM the user a plain-text message, opening the IM channel if needed."""
+    im = client.conversations_open(users=user_id)
+    client.chat_postMessage(channel=im["channel"]["id"], text=text)
+
+
 @app.action("confirm_tailgate")
 def handle_confirm(ack, body, client, respond):
     ack()
@@ -38,9 +44,12 @@ def handle_confirm(ack, body, client, respond):
     date = jobs.today_str(cfg)
 
     if not _is_authorized(client, user_id):
-        respond(
-            response_type="ephemeral",
-            text="Sorry, only day-shift observing specialists can confirm this meeting.",
+        _dm_user(
+            client,
+            user_id,
+            "Thanks for the interest, but only day-shift observing specialists can "
+            "confirm the Evening Tailgate Meeting. If that should be you, ask whoever "
+            "manages the day-shift rotation to add you to the Slack user group.",
         )
         return
 

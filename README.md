@@ -21,6 +21,7 @@ inbound port required, so it works fine behind the observatory firewall.
 5. **Bot scopes**: under *Features → OAuth & Permissions → Scopes → Bot Token Scopes*, add:
    - `chat:write` (post and update messages)
    - `usergroups:read` (check who's in the day-shift user group)
+   - `im:write` (open a DM to tell an unauthorized clicker they can't confirm)
 6. **Interactivity**: under *Features → Interactivity & Shortcuts*, turn it on. With
    Socket Mode enabled you don't need a Request URL.
 7. Install the app to your workspace (*Settings → Install App*). Copy the **Bot User OAuth

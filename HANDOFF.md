@@ -66,7 +66,8 @@ server is available.
 
 ### Not yet done — this is where you pick up
 1. **Create the real Slack app** following `README.md` section 1–2 (Socket Mode, `chat:write` +
-   `usergroups:read` scopes, interactivity on, install to workspace, invite bot to channel).
+   `usergroups:read` + `im:write` scopes, interactivity on, install to workspace, invite bot
+   to channel).
 2. **Create/identify the Slack User Group** for day-shift observing specialists and get its ID.
 3. **Fill in `.env`** from `.env.example` with real tokens, channel ID, user group ID, and the
    actual meeting link.
