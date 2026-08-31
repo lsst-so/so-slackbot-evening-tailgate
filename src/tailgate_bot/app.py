@@ -90,6 +90,9 @@ def handle_confirm(ack, body, client, respond):
         channel=cfg.channel_id,
         text=f"Evening Tailgate Meeting confirmed for today at {cfg.meeting_time_label}.",
         blocks=notice_blocks,
+        # The meeting link (Zoom) otherwise unfurls into a tall preview card.
+        unfurl_links=False,
+        unfurl_media=False,
     )
 
     if record.message_ts:
