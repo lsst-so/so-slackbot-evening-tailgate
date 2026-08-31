@@ -48,6 +48,7 @@ def reminder_text_fallback(cfg: Config) -> str:
 
 def confirmed_notice_blocks(cfg: Config) -> list:
     text = (
+        f"{_usergroup_mention(cfg)}"
         f":white_check_mark: *Evening Tailgate Meeting confirmed* for today at "
         f"*{cfg.meeting_time_label}*.\nJoin here: {cfg.meeting_link}"
     )
@@ -56,6 +57,7 @@ def confirmed_notice_blocks(cfg: Config) -> list:
 
 def cancelled_notice_blocks(cfg: Config) -> list:
     text = (
+        f"{_usergroup_mention(cfg)}"
         f":x: *Evening Tailgate Meeting is cancelled* today — no confirmation was "
         f"received by {cfg.cutoff_time}."
     )

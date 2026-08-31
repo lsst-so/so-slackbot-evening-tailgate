@@ -12,12 +12,13 @@ cancellation; a day-shift observing specialist must actively confirm for it to h
 2. **Any day-shift observing specialist** clicks "Confirm Meeting" between 16:15 and 16:25.
    - Bot checks the clicker's membership in a designated Slack User Group (e.g. `@day-obs-specialists`).
    - Not a member → bot DMs the clicker to say they can't confirm, no state change.
-   - Member, first confirm today → bot posts a follow-up message: meeting is happening, with the
-     meeting link, and who confirmed it. Original reminder is edited to remove the button.
+   - Member, first confirm today → bot posts a follow-up message (also @-mentioning the
+     groups): meeting is happening, with the meeting link, and who confirmed it. Original
+     reminder is edited to remove the button.
    - Member, already confirmed by someone else → ephemeral "already confirmed by X".
-3. **16:25 (cutoff)** — if nobody confirmed, bot posts an explicit cancellation message and edits
-   the original reminder to remove the button. A late click after this point gets an ephemeral
-   "too late, already cancelled" reply.
+3. **16:25 (cutoff)** — if nobody confirmed, bot posts an explicit cancellation message (also
+   @-mentioning the groups) and edits the original reminder to remove the button. A late click
+   after this point gets an ephemeral "too late, already cancelled" reply.
 
 ## Key decisions (from requirements discussion, 2026-08-31)
 - **Build**: custom Slack bot (Python, Slack Bolt), not Workflow Builder — needed for the

@@ -60,6 +60,20 @@ def test_cancelled_notice_says_cancelled(make_cfg):
     assert "cancelled" in text.lower()
 
 
+def test_confirmed_and_cancelled_notices_tag_every_group(make_cfg):
+    cfg = make_cfg(mention_usergroup_ids=("S_DAYOBS", "S_SCISUP"))
+    for builder in (messages.confirmed_notice_blocks, messages.cancelled_notice_blocks):
+        text = _section_text(builder(cfg))
+        assert "<!subteam^S_DAYOBS>" in text
+        assert "<!subteam^S_SCISUP>" in text
+
+
+def test_notices_respect_mention_toggle(make_cfg):
+    cfg = make_cfg(mention_usergroup_ids=("S_DAYOBS", "S_SCISUP"), mention_usergroup=False)
+    for builder in (messages.confirmed_notice_blocks, messages.cancelled_notice_blocks):
+        assert "<!subteam^" not in _section_text(builder(cfg))
+
+
 def test_resolved_reminder_drops_the_button(make_cfg):
     cfg = make_cfg()
     for status in ("confirmed", "cancelled"):
