@@ -36,6 +36,13 @@ def test_reminder_usergroup_tag_can_be_disabled(make_cfg):
     assert "<!subteam^" not in text
 
 
+def test_reminder_tags_every_configured_group(make_cfg):
+    cfg = make_cfg(mention_usergroup_ids=("S_DAYOBS", "S_SCISUP"))
+    text = _section_text(messages.reminder_blocks(cfg))
+    assert "<!subteam^S_DAYOBS>" in text
+    assert "<!subteam^S_SCISUP>" in text
+
+
 def test_reminder_fallback_is_plain_text(make_cfg):
     text = messages.reminder_text_fallback(make_cfg())
     assert isinstance(text, str)

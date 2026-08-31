@@ -6,7 +6,9 @@ cancellation; a day-shift observing specialist must actively confirm for it to h
 
 ## Flow
 1. **16:15** — bot posts a reminder to the tailgate channel: meeting starts at 16:30, with a
-   "Confirm Meeting" button. Text makes clear that no action = cancelled.
+   "Confirm Meeting" button. Text makes clear that no action = cancelled. The reminder
+   @-mentions the day-obs user group (and optionally a science-support shift group) so their
+   members are notified; only day-obs members can actually confirm.
 2. **Any day-shift observing specialist** clicks "Confirm Meeting" between 16:15 and 16:25.
    - Bot checks the clicker's membership in a designated Slack User Group (e.g. `@day-obs-specialists`).
    - Not a member → bot DMs the clicker to say they can't confirm, no state change.

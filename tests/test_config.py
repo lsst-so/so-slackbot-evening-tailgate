@@ -17,6 +17,7 @@ OPTIONAL = (
     "TAILGATE_MEETING_TIME_LABEL",
     "TAILGATE_DB_PATH",
     "TAILGATE_MENTION_USERGROUP",
+    "SCI_SUP_SHIFT_USERGROUP_ID",
 )
 
 
@@ -45,6 +46,18 @@ def test_defaults_when_optional_unset(clean_env):
     assert cfg.meeting_time_label == "16:30"
     assert cfg.db_path == "tailgate_state.db"
     assert cfg.mention_usergroup is True
+    # with no SCI_SUP_SHIFT_USERGROUP_ID, only DAY_OBS is mentioned
+    assert cfg.mention_usergroup_ids == (cfg.usergroup_id,)
+
+
+def test_sci_sup_group_is_mentioned_but_not_the_authorizer(clean_env):
+    for name in REQUIRED:
+        clean_env.setenv(name, "x")
+    clean_env.setenv("DAY_OBS_USERGROUP_ID", "S_DAYOBS")
+    clean_env.setenv("SCI_SUP_SHIFT_USERGROUP_ID", "S_SCISUP")
+    cfg = load_config()
+    assert cfg.usergroup_id == "S_DAYOBS"  # still the only authorizer
+    assert cfg.mention_usergroup_ids == ("S_DAYOBS", "S_SCISUP")
 
 
 def test_optional_overrides_applied(clean_env):

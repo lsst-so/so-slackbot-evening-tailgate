@@ -8,7 +8,7 @@ class Config:
     slack_bot_token: str
     slack_app_token: str
     channel_id: str
-    usergroup_id: str
+    usergroup_id: str  # the only group whose members may confirm the meeting
     meeting_link: str
     timezone: str
     reminder_time: str  # "HH:MM", 24h
@@ -16,6 +16,7 @@ class Config:
     meeting_time_label: str
     db_path: str
     mention_usergroup: bool
+    mention_usergroup_ids: tuple[str, ...]  # groups @-mentioned in the reminder
 
 
 def _require(name: str) -> str:
@@ -36,11 +37,17 @@ def _env_bool(name: str, default: bool) -> bool:
 
 
 def load_config() -> Config:
+    day_obs_id = _require("DAY_OBS_USERGROUP_ID")
+    # Optional extra group(s) that get the reminder ping but cannot confirm.
+    extra_ids = [
+        gid for gid in (os.environ.get("SCI_SUP_SHIFT_USERGROUP_ID", "").strip(),)
+        if gid
+    ]
     return Config(
         slack_bot_token=_require("SLACK_BOT_TOKEN"),
         slack_app_token=_require("SLACK_APP_TOKEN"),
         channel_id=_require("TAILGATE_CHANNEL_ID"),
-        usergroup_id=_require("DAY_OBS_USERGROUP_ID"),
+        usergroup_id=day_obs_id,
         meeting_link=_require("TAILGATE_MEETING_LINK"),
         timezone=os.environ.get("TAILGATE_TIMEZONE", "America/Santiago"),
         reminder_time=os.environ.get("TAILGATE_REMINDER_TIME", "16:15"),
@@ -48,4 +55,5 @@ def load_config() -> Config:
         meeting_time_label=os.environ.get("TAILGATE_MEETING_TIME_LABEL", "16:30"),
         db_path=os.environ.get("TAILGATE_DB_PATH", "tailgate_state.db"),
         mention_usergroup=_env_bool("TAILGATE_MENTION_USERGROUP", True),
+        mention_usergroup_ids=(day_obs_id, *extra_ids),
     )

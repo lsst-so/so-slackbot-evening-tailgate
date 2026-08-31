@@ -3,8 +3,11 @@ from .config import Config
 
 
 def _usergroup_mention(cfg: Config) -> str:
-    """Slack markup that notifies every member of the day-shift user group."""
-    return f"<!subteam^{cfg.usergroup_id}>\n" if cfg.mention_usergroup else ""
+    """Slack markup that notifies every member of the mentioned group(s)."""
+    if not cfg.mention_usergroup or not cfg.mention_usergroup_ids:
+        return ""
+    tags = " ".join(f"<!subteam^{gid}>" for gid in cfg.mention_usergroup_ids)
+    return f"{tags}\n"
 
 
 def reminder_blocks(cfg: Config) -> list:

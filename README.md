@@ -36,7 +36,11 @@ inbound port required, so it works fine behind the observatory firewall.
 - User Group ID: create or reuse a Slack User Group for day-shift observing specialists
   (*People & user groups* in your workspace admin, or `/` command in Slack). Its ID
   (starts with `S`) is visible via the Slack API's `usergroups.list`, or ask a workspace
-  admin — it's not shown directly in the UI.
+  admin — it's not shown directly in the UI. This is `DAY_OBS_USERGROUP_ID`, the only
+  group whose members can confirm the meeting.
+- Optionally set `SCI_SUP_SHIFT_USERGROUP_ID` (same "starts with `S`" lookup) to a second
+  group that should also be pinged by the reminder for awareness. Its members are *not*
+  allowed to confirm.
 
 ## 3. Configure
 
@@ -138,6 +142,7 @@ sudo systemctl status tailgate-bot
   in `DESIGN.md`.
 - Reminder time, cutoff time, and the meeting time label are independently configurable
   via environment variables if 16:15 / 16:25 / 16:30 ever change.
-- The reminder @-mentions the day-shift user group (`DAY_OBS_USERGROUP_ID`) so its members
-  get notified. Only members who are also in the channel are notified. Set
-  `TAILGATE_MENTION_USERGROUP=false` to drop the mention.
+- The reminder @-mentions the day-shift user group (`DAY_OBS_USERGROUP_ID`), plus
+  `SCI_SUP_SHIFT_USERGROUP_ID` if set, so their members get notified. Only members who are
+  also in the channel are notified. Set `TAILGATE_MENTION_USERGROUP=false` to drop the
+  mention entirely.

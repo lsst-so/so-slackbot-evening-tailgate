@@ -23,6 +23,7 @@ def make_cfg(tmp_path):
             mention_usergroup=True,
         )
         base.update(overrides)
+        base.setdefault("mention_usergroup_ids", (base["usergroup_id"],))
         return Config(**base)
 
     return _make
