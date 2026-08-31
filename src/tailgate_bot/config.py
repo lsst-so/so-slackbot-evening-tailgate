@@ -15,6 +15,7 @@ class Config:
     cutoff_time: str    # "HH:MM", 24h
     meeting_time_label: str
     db_path: str
+    mention_usergroup: bool
 
 
 def _require(name: str) -> str:
@@ -25,6 +26,13 @@ def _require(name: str) -> str:
             f"Copy .env.example to .env and fill it in."
         )
     return val
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in ("1", "true", "yes", "on")
 
 
 def load_config() -> Config:
@@ -39,4 +47,5 @@ def load_config() -> Config:
         cutoff_time=os.environ.get("TAILGATE_CUTOFF_TIME", "16:25"),
         meeting_time_label=os.environ.get("TAILGATE_MEETING_TIME_LABEL", "16:30"),
         db_path=os.environ.get("TAILGATE_DB_PATH", "tailgate_state.db"),
+        mention_usergroup=_env_bool("TAILGATE_MENTION_USERGROUP", True),
     )

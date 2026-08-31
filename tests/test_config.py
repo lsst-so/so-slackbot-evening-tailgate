@@ -16,6 +16,7 @@ OPTIONAL = (
     "TAILGATE_CUTOFF_TIME",
     "TAILGATE_MEETING_TIME_LABEL",
     "TAILGATE_DB_PATH",
+    "TAILGATE_MENTION_USERGROUP",
 )
 
 
@@ -43,6 +44,7 @@ def test_defaults_when_optional_unset(clean_env):
     assert cfg.cutoff_time == "16:25"
     assert cfg.meeting_time_label == "16:30"
     assert cfg.db_path == "tailgate_state.db"
+    assert cfg.mention_usergroup is True
 
 
 def test_optional_overrides_applied(clean_env):
@@ -53,3 +55,15 @@ def test_optional_overrides_applied(clean_env):
     cfg = load_config()
     assert cfg.reminder_time == "17:00"
     assert cfg.db_path == "/data/tailgate_state.db"
+
+
+@pytest.mark.parametrize(
+    "raw, expected",
+    [("false", False), ("0", False), ("no", False), ("off", False),
+     ("true", True), ("1", True), ("YES", True), ("On", True)],
+)
+def test_mention_usergroup_parsing(clean_env, raw, expected):
+    for name in REQUIRED:
+        clean_env.setenv(name, "x")
+    clean_env.setenv("TAILGATE_MENTION_USERGROUP", raw)
+    assert load_config().mention_usergroup is expected

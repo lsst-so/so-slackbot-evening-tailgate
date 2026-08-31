@@ -24,6 +24,18 @@ def test_reminder_mentions_meeting_and_cutoff_times(make_cfg):
     assert "16:25" in text
 
 
+def test_reminder_tags_the_usergroup_by_default(make_cfg):
+    cfg = make_cfg(usergroup_id="S99999")
+    text = _section_text(messages.reminder_blocks(cfg))
+    assert "<!subteam^S99999>" in text
+
+
+def test_reminder_usergroup_tag_can_be_disabled(make_cfg):
+    cfg = make_cfg(usergroup_id="S99999", mention_usergroup=False)
+    text = _section_text(messages.reminder_blocks(cfg))
+    assert "<!subteam^" not in text
+
+
 def test_reminder_fallback_is_plain_text(make_cfg):
     text = messages.reminder_text_fallback(make_cfg())
     assert isinstance(text, str)

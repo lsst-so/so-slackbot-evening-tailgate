@@ -138,3 +138,6 @@ sudo systemctl status tailgate-bot
   in `DESIGN.md`.
 - Reminder time, cutoff time, and the meeting time label are independently configurable
   via environment variables if 16:15 / 16:25 / 16:30 ever change.
+- The reminder @-mentions the day-shift user group (`DAY_OBS_USERGROUP_ID`) so its members
+  get notified. Only members who are also in the channel are notified. Set
+  `TAILGATE_MENTION_USERGROUP=false` to drop the mention.

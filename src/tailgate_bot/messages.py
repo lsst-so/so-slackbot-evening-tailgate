@@ -2,6 +2,11 @@
 from .config import Config
 
 
+def _usergroup_mention(cfg: Config) -> str:
+    """Slack markup that notifies every member of the day-shift user group."""
+    return f"<!subteam^{cfg.usergroup_id}>\n" if cfg.mention_usergroup else ""
+
+
 def reminder_blocks(cfg: Config) -> list:
     return [
         {
@@ -9,6 +14,7 @@ def reminder_blocks(cfg: Config) -> list:
             "text": {
                 "type": "mrkdwn",
                 "text": (
+                    f"{_usergroup_mention(cfg)}"
                     f":alarm_clock: *Evening Tailgate Meeting* is scheduled for "
                     f"*{cfg.meeting_time_label}* today.\n"
                     f"By default it is *cancelled* — a day-shift observing specialist "

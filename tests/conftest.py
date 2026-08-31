@@ -20,6 +20,7 @@ def make_cfg(tmp_path):
             cutoff_time="16:25",
             meeting_time_label="16:30",
             db_path=str(tmp_path / "state.db"),
+            mention_usergroup=True,
         )
         base.update(overrides)
         return Config(**base)
