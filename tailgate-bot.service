@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=simple
 # Adjust these two paths for wherever you deploy the bot:
 WorkingDirectory=/opt/tailgate-bot
-ExecStart=/opt/tailgate-bot/.venv/bin/python /opt/tailgate-bot/app.py
+ExecStart=/opt/tailgate-bot/.venv/bin/tailgate-bot
 EnvironmentFile=/opt/tailgate-bot/.env
 Restart=on-failure
 RestartSec=10

@@ -1,5 +1,5 @@
 """Block Kit message builders, kept separate from the handler logic."""
-from config import Config
+from .config import Config
 
 
 def reminder_blocks(cfg: Config) -> list:

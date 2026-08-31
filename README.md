@@ -45,10 +45,14 @@ cp .env.example .env
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install .                    # installs the `tailgate-bot` console script
 set -a; source .env; set +a
-python app.py
+tailgate-bot                     # or: python -m tailgate_bot
 ```
+
+The bot is packaged as `tailgate_bot` under `src/`; `pip install .` reads its
+dependencies and entry point from `pyproject.toml`. For iterative work use
+`pip install -e .` so code edits take effect without reinstalling.
 
 You should see log lines confirming the scheduler started with the configured reminder
 and cutoff times. Leave it running — it wakes up on its own at the scheduled times each
@@ -95,7 +99,7 @@ sudo mkdir -p /opt/tailgate-bot
 sudo cp -r . /opt/tailgate-bot
 cd /opt/tailgate-bot
 sudo python3 -m venv .venv
-sudo .venv/bin/pip install -r requirements.txt
+sudo .venv/bin/pip install .
 sudo useradd --system --no-create-home tailgate-bot   # if it doesn't exist yet
 sudo chown -R tailgate-bot:tailgate-bot /opt/tailgate-bot
 sudo cp tailgate-bot.service /etc/systemd/system/

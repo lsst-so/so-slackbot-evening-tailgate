@@ -12,11 +12,11 @@ import logging
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from config import load_config
-from state import StateStore
-import jobs
-import messages
-from scheduler import build_scheduler
+from .config import load_config
+from .state import StateStore
+from . import jobs
+from . import messages
+from .scheduler import build_scheduler
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("tailgate_bot")

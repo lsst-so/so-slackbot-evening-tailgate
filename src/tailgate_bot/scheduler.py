@@ -4,9 +4,9 @@ from zoneinfo import ZoneInfo
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from config import Config
-from state import StateStore
-import jobs
+from .config import Config
+from .state import StateStore
+from . import jobs
 
 
 def _parse_hhmm(value: str) -> tuple[int, int]:

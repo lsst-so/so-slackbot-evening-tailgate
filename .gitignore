@@ -1,7 +1,6 @@
 # Python
 __pycache__/
 *.py[cod]
-*.egg-info/
 .venv/
 venv/
 
@@ -16,3 +15,8 @@ tailgate_state.db
 .pytest_cache/
 .coverage
 pytest_session.txt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

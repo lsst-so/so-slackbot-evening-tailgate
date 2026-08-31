@@ -1,3 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "so-slackbot-evening-tailgate"
+version = "0.1.0"
+description = "Slack bot that coordinates Vera Rubin Observatory's daily Evening Tailgate Meeting."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "GPL-3.0-or-later" }
+dependencies = [
+    "slack-bolt>=1.19,<2",
+    "APScheduler>=3.10,<4",
+]
+
+[project.scripts]
+tailgate-bot = "tailgate_bot.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 # Pytest configuration required to prevent pytest from looking for
-# configurations in parent directories. Can be empty.
+# configurations in parent directories.
 [tool.pytest.ini_options]

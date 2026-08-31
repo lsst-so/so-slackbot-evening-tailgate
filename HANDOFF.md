@@ -21,9 +21,13 @@ API or actually run inside a real Docker daemon — that's the immediate next st
 server is available.
 
 ### What's done
-- `app.py` + `config.py`, `state.py`, `messages.py`, `jobs.py`, `scheduler.py` — the full bot.
-  Python, Slack Bolt, Socket Mode (no public inbound URL needed).
-- `requirements.txt`, `.env.example` — dependencies and required configuration.
+- `src/tailgate_bot/` — the full bot as an installable package (`app.py`, `config.py`,
+  `state.py`, `messages.py`, `jobs.py`, `scheduler.py`, plus `__main__.py`).
+  Python, Slack Bolt, Socket Mode (no public inbound URL needed). Entry point:
+  `tailgate_bot.app:main`, exposed as the `tailgate-bot` console script.
+- `pyproject.toml` — package metadata, dependencies, and the console-script entry point
+  (replaces the old flat modules + `requirements.txt`).
+- `.env.example` — required configuration.
 - `Dockerfile`, `docker-compose.yml`, `.dockerignore` — containerized deployment, state
   persisted on a named volume (`tailgate-data:/data`).
 - `tailgate-bot.service` — systemd unit, kept as a non-Docker fallback deployment path.
