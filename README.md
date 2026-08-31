@@ -58,6 +58,19 @@ You should see log lines confirming the scheduler started with the configured re
 and cutoff times. Leave it running — it wakes up on its own at the scheduled times each
 day and also handles button clicks in real time via the Socket Mode connection.
 
+## Tests
+
+```bash
+pip install '.[test]'
+pytest
+```
+
+The suite is Slack-free — it exercises the state machine, the Block Kit builders,
+the two scheduled jobs (with a fake Slack client), the scheduler wiring, and config
+loading. It runs on every push and pull request via `.github/workflows/test.yaml`
+(Python 3.11–3.13). Testing against a real Slack workspace is the manual dry-run in
+`HANDOFF.md`.
+
 ## 5. Deploy as an always-on service
 
 Any always-on Linux machine with outbound internet access works — an existing

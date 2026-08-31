@@ -1,4 +1,4 @@
-"""APScheduler wiring for the two daily jobs, in the observatory's local timezone."""
+"""APScheduler wiring for the two daily jobs, in the configured timezone."""
 from zoneinfo import ZoneInfo
 
 from apscheduler.schedulers.background import BackgroundScheduler

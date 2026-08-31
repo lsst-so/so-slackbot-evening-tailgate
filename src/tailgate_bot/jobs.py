@@ -31,8 +31,12 @@ def check_cutoff(client, cfg: Config, store: StateStore) -> None:
         logger.info("Cutoff check for %s: nothing to do (already resolved or no reminder)", date)
         return
 
-    client.chat_postMessage(channel=cfg.channel_id, blocks=messages.cancelled_notice_blocks(cfg),
-                             text=messages.cancelled_notice_blocks(cfg)[0]["text"]["text"])
+    cancelled_blocks = messages.cancelled_notice_blocks(cfg)
+    client.chat_postMessage(
+        channel=cfg.channel_id,
+        blocks=cancelled_blocks,
+        text=cancelled_blocks[0]["text"]["text"],
+    )
 
     record = store.get(date)
     if record and record.message_ts:

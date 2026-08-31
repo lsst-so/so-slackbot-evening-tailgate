@@ -1,9 +1,9 @@
 """Evening Tailgate Meeting bot.
 
 Runs a Slack Bolt app in Socket Mode (no public inbound URL needed) that:
-  - posts a daily reminder with a "Confirm Meeting" button (see config.REMINDER_TIME),
+  - posts a daily reminder with a "Confirm Meeting" button,
   - only accepts confirmation from members of a designated Slack User Group,
-  - posts an explicit cancellation message if nobody confirms by config.CUTOFF_TIME.
+  - posts an explicit cancellation message if nobody confirms by the cutoff.
 
 See README.md for setup and DESIGN.md for the full behavior spec.
 """

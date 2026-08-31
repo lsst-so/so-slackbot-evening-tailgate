@@ -14,6 +14,9 @@ dependencies = [
     "APScheduler>=3.10,<4",
 ]
 
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
 [project.scripts]
 tailgate-bot = "tailgate_bot.app:main"
 
@@ -23,3 +26,5 @@ where = ["src"]
 # Pytest configuration required to prevent pytest from looking for
 # configurations in parent directories.
 [tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

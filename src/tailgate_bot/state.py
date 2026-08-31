@@ -41,7 +41,10 @@ class StateStore:
         return sqlite3.connect(self._db_path)
 
     def start_new_day(self, date: str, message_ts: str) -> None:
-        """Called when the 16:15 reminder is posted. Resets any stale row for this date."""
+        """Called when the reminder is posted.
+
+        Resets any stale row for this date.
+        """
         with closing(self._connect()) as conn:
             conn.execute(
                 "INSERT OR REPLACE INTO daily_status "
@@ -61,8 +64,9 @@ class StateStore:
         return DayRecord(*row) if row else None
 
     def confirm(self, date: str, user_id: str) -> bool:
-        """Marks today confirmed. Returns False if there was nothing pending
-        (already confirmed by someone else, already cancelled, or no reminder posted)."""
+        """Mark today confirmed. Returns False if nothing was pending
+        (already confirmed by someone else, already cancelled, or no
+        reminder posted)."""
         with closing(self._connect()) as conn:
             row = conn.execute(
                 "SELECT status FROM daily_status WHERE date = ?", (date,)
@@ -78,8 +82,11 @@ class StateStore:
             return True
 
     def cancel_if_pending(self, date: str) -> bool:
-        """Called at the cutoff. Returns True if it actually flipped pending -> cancelled
-        (i.e. nobody had confirmed), False if it was already confirmed/cancelled/missing."""
+        """Called at the cutoff.
+
+        Returns True if it flipped pending -> cancelled (nobody had
+        confirmed), False if it was already confirmed/cancelled/missing.
+        """
         with closing(self._connect()) as conn:
             row = conn.execute(
                 "SELECT status FROM daily_status WHERE date = ?", (date,)

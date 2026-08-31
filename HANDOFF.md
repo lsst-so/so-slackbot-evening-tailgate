@@ -37,11 +37,18 @@ server is available.
 - `DESIGN.md` — the full behavior spec and the reasoning behind each decision.
 
 ### What's verified, and how
-- All Python files pass `py_compile` (no syntax errors).
-- The state machine (SQLite-backed day status: pending/confirmed/cancelled) was exercised with
-  a throwaway self-test script covering: first confirm succeeds, duplicate/racing confirms are
-  rejected, cutoff correctly no-ops once already resolved, cutoff correctly cancels when nothing
-  happened, and a late click after cancellation is rejected. All passed.
+- All Python files pass `py_compile` (no syntax errors) and `flake8` (repo `setup.cfg`).
+- A `pytest` suite under `tests/` (27 tests, Slack-free, runs in CI on Python 3.11–3.13
+  via `.github/workflows/test.yaml`) covers: the state machine (first confirm succeeds,
+  duplicate/racing confirms rejected, cutoff no-ops once resolved, cutoff cancels when
+  nothing happened, late click after cancellation rejected, state survives reopen); the
+  Block Kit builders; both scheduled jobs driven by a fake Slack client; the scheduler
+  wiring (job ids, times, timezone); and `load_config` defaults / required-var errors.
+- What the suite does *not* cover: `app.py` / the `handle_confirm` button handler, because
+  importing it runs `load_config()` and `slack_bolt.App()` (a live `auth.test` call) at
+  module load. Its logic mirrors the `StateStore` transitions and message builders that
+  are tested directly; exercising it needs the lazy-bootstrap refactor noted below, plus
+  the manual Slack dry-run in step 5.
 - `docker-compose.yml` syntax was validated with `docker compose config`.
 - **Bug caught and fixed during Docker verification**: `.env.example` originally hardcoded
   `TAILGATE_DB_PATH=tailgate_state.db`. Because Docker Compose's `env_file` injects that into
@@ -76,6 +83,9 @@ server is available.
 - Who maintains the day-shift Slack User Group's membership day to day.
 - Whether the bot should skip weekends/holidays entirely (currently posts every day — see the
   note in `DESIGN.md` and `scheduler.py` for where a day-of-week check would go).
+- `app.py` builds `cfg`, `store` and the Bolt `App` at import time. Moving that into `main()`
+  (registering `handle_confirm` from inside `main`, passing `cfg`/`store` via closure) would
+  let the button-handler logic be unit-tested in CI without real Slack credentials.
 
 ## Where the rest of the context lives
 The full requirements discussion and design rationale is also saved as a doc in the

@@ -37,8 +37,7 @@ def reminder_text_fallback(cfg: Config) -> str:
     )
 
 
-def confirmed_notice_blocks(cfg: Config, updated: bool = False) -> list:
-    prefix = "Evening Tailgate Meeting — confirmed" if updated else None
+def confirmed_notice_blocks(cfg: Config) -> list:
     text = (
         f":white_check_mark: *Evening Tailgate Meeting confirmed* for today at "
         f"*{cfg.meeting_time_label}*.\nJoin here: {cfg.meeting_link}"
@@ -58,7 +57,7 @@ def reminder_resolved_blocks(cfg: Config, status: str) -> list:
     """Replacement blocks for the original reminder message once it's resolved
     (button removed either way)."""
     if status == "confirmed":
-        text = f":white_check_mark: Evening Tailgate Meeting — confirmed for today."
+        text = ":white_check_mark: Evening Tailgate Meeting — confirmed for today."
     else:
-        text = f":x: Evening Tailgate Meeting — cancelled for today (no confirmation)."
+        text = ":x: Evening Tailgate Meeting — cancelled for today (no confirmation)."
     return [{"type": "section", "text": {"type": "mrkdwn", "text": text}}]
