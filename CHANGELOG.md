@@ -9,6 +9,13 @@ project uses [Semantic Versioning](https://semver.org/).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-0.1.1'></a>
+## 0.1.1 (2026-09-01)
+
+### Other changes
+
+- Standardised on Python 3.13: `requires-python` is now `>=3.13`, the container image is built `FROM python:3.13-slim`, and CI runs the test suite on 3.13 only (was 3.11–3.13).
+
 <a id='changelog-0.1.0'></a>
 ## 0.1.0 (2026-09-01)
 
