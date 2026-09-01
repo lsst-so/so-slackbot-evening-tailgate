@@ -6,6 +6,13 @@ exposed as the ``tailgate-bot`` console script (and ``python -m
 tailgate_bot``).
 """
 
+from importlib.metadata import PackageNotFoundError, version as _version
+
 __all__ = ["__version__"]
 
-__version__ = "0.1.0"
+try:
+    __version__ = _version("so-slackbot-evening-tailgate")
+except PackageNotFoundError:
+    # Package is not installed (e.g. running from a source tree with no
+    # editable install). setuptools-scm owns the real value at build time.
+    __version__ = "0.0.0"
