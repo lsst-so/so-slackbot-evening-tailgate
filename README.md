@@ -81,6 +81,15 @@ loading. It runs on every push and pull request via `.github/workflows/test.yaml
 (Python 3.11–3.13). Testing against a real Slack workspace is the manual dry-run in
 `HANDOFF.md`.
 
+## Versioning and changelog
+
+The package version is derived from the Git tag by
+[setuptools-scm](https://setuptools-scm.readthedocs.io/) — there is no version
+string in the source to bump. The changelog is built from news fragments in
+`changelog.d/` with [scriv](https://scriv.readthedocs.io/): add one to every
+user-facing PR (`pip install -e '.[dev]'` then `scriv create`). The full release
+procedure, including the SemVer rules and how to cut a tag, is in `RELEASE.md`.
+
 ## 5. Deploy as an always-on service
 
 Any always-on Linux machine with outbound internet access works — an existing
