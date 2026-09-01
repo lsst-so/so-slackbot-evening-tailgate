@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # tini: a real PID 1 that reaps zombies and forwards SIGTERM to the bot, so
 # `docker stop` / a Kubernetes pod eviction shuts the Socket Mode connection
