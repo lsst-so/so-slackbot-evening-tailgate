@@ -9,8 +9,8 @@ project uses [Semantic Versioning](https://semver.org/).
 
 <!-- scriv-insert-here -->
 
-<a id='changelog-1.0.0'></a>
-## 1.0.0 (2026-09-01)
+<a id='changelog-0.1.0'></a>
+## 0.1.0 (2026-09-01)
 
 ### New features
 
