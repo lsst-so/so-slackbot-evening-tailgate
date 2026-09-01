@@ -39,7 +39,15 @@ piece of work is packaging it to run continuously on **Phalanx** (see "Next work
   3.11–3.13. `.github/workflows/lint.yaml` runs flake8 (repo `setup.cfg`).
 - `.env.example` — every config variable, with comments.
 - `Dockerfile`, `docker-compose.yml`, `.dockerignore` — container build (`pip install .`,
-  runs `tailgate-bot` as a non-root user; SQLite state on a named volume at `/data`).
+  runs `tailgate-bot` as a non-root uid 1000; `tini` as PID 1 for prompt SIGTERM
+  shutdown; `PYTHONUNBUFFERED=1`; `org.opencontainers.image.source` label for GHCR;
+  SQLite state on a named volume / PVC at `/data`). Built and smoke-tested locally on
+  2026-09-01: image ~168 MB, console script runs, `zoneinfo` resolves `America/Santiago`
+  via the `tzdata` dep, `docker stop` returns immediately.
+- `.github/workflows/docker.yaml` — builds the image on every PR (no push) and pushes to
+  `ghcr.io/lsst-so/so-slackbot-evening-tailgate` on push to `main` and on `v*` tags,
+  with `docker/metadata-action` tag set (`latest`, branch, `sha`, semver) and GHA layer
+  cache.
 - `tailgate-bot.service` — systemd unit, kept as a non-container fallback.
 - `README.md` — Slack app setup (Socket Mode, app-level token, `chat:write` +
   `usergroups:read` + `im:write` scopes, interactivity), getting channel / user-group IDs,
@@ -96,12 +104,13 @@ the Squarebot pattern?
 
 Assuming Socket Mode is accepted, the work is roughly:
 
-1. **Publish the image.** Add a GitHub Actions workflow in *this* repo to build the
-   `Dockerfile` and push to `ghcr.io/lsst-so/so-slackbot-evening-tailgate` on release/tag
-   (SQuaRE has a reusable build-and-push action). The `Dockerfile` already produces an
-   installable package running as non-root; `tzdata` is a dependency so `zoneinfo` works on
-   the slim base image. Verify the build once a Docker daemon is available — it has never
-   actually been built.
+1. **Publish the image.** Done in this repo: `.github/workflows/docker.yaml` builds the
+   `Dockerfile` on every PR and pushes to `ghcr.io/lsst-so/so-slackbot-evening-tailgate`
+   on push to `main` and on `v*` tags. The build has now been run locally and smoke-tested
+   (see "What's done"). Remaining: confirm the workflow actually pushes once merged (the
+   GHCR package may need to be created / made visible to the org the first time), and
+   decide whether to switch to SQuaRE's reusable build-and-push action for consistency
+   with other Phalanx apps. Tag `v0.1.0` to cut the first real image.
 2. **Create the Phalanx application** — a PR to `lsst-sqre/phalanx` adding
    `applications/so-slackbot-evening-tailgate/`: `Chart.yaml`, a `Deployment` template
    (1 replica, `strategy: Recreate`), `values.yaml` for the non-secret config

@@ -113,6 +113,12 @@ docker run -d --name tailgate-bot --restart unless-stopped \
   --env-file .env -v tailgate-data:/data tailgate-bot
 ```
 
+The image runs `tini` as PID 1, so `docker stop` / a Kubernetes pod
+eviction shuts the Socket Mode connection down immediately instead of
+waiting out the kill grace period. It carries an
+`org.opencontainers.image.source` label so GitHub Container Registry links
+the published image back to this repo.
+
 ### Option B: systemd (bare metal, no Docker)
 
 A sample `tailgate-bot.service` unit is included for a host without Docker:
@@ -130,6 +136,30 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now tailgate-bot
 sudo systemctl status tailgate-bot
 ```
+
+### Option C: Phalanx (Kubernetes at Vera Rubin)
+
+The bot is destined to run on **Phalanx** as a single-replica `Deployment`
+(`strategy: Recreate`). Nothing about the container changes; only where the
+config comes from:
+
+- **Every setting is read from an environment variable** (`config.load_config()`
+  — no file parsing, no defaults baked into a file). So on Phalanx there is no
+  `.env`: the non-secret variables come from the chart's `values-<env>.yaml`,
+  and `SLACK_BOT_TOKEN` / `SLACK_APP_TOKEN` come from a Kubernetes `Secret`
+  (declared in the chart's `secrets.yaml`, populated from Vault by the Vault
+  Secrets Operator) surfaced into the pod with `envFrom`/`secretKeyRef`. No
+  code change is needed to switch from `.env` to secrets.
+- **State volume:** mount a small `PersistentVolumeClaim` at `/data`; the image
+  already defaults `TAILGATE_DB_PATH` to `/data/tailgate_state.db`. The DB only
+  has to survive a same-day restart, so losing it is at worst a duplicate
+  reminder — a PVC is optional.
+- **No Ingress / route / Gafaelfawr:** Socket Mode is outbound-only.
+- The image is published to `ghcr.io/lsst-so/so-slackbot-evening-tailgate` by
+  `.github/workflows/docker.yaml` on push to `main` and on version tags.
+
+The full Phalanx application checklist (chart layout, which environment, Vault
+secret ownership) is in `HANDOFF.md`.
 
 ## Notes
 

@@ -1,8 +1,24 @@
-.venv/
-__pycache__/
-*.pyc
-.env
+# Keep the build context small: the image only needs pyproject.toml,
+# README.md and src/ (see Dockerfile). Everything else is noise.
 .git
+.github
 .gitignore
+.venv
+venv
+__pycache__
+*.py[cod]
+.env
 *.db
+build
+dist
+*.egg-info
+src/*.egg-info
+.pytest_cache
+.coverage
+tests
+docker-compose.yml
+Dockerfile
+.dockerignore
 tailgate-bot.service
+HANDOFF.md
+DESIGN.md

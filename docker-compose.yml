@@ -4,6 +4,8 @@ services:
     image: tailgate-bot:latest
     container_name: tailgate-bot
     restart: unless-stopped
+    # Local / single-host deployment reads config from .env. Under Phalanx
+    # the same variables come from a Kubernetes Secret instead (see README).
     env_file:
       - .env
     volumes:
