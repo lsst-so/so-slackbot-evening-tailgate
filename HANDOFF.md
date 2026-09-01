@@ -36,7 +36,7 @@ piece of work is packaging it to run continuously on **Phalanx** (see "Next work
   the `tailgate-bot` console script, and the `test` extra. Replaces the old flat modules +
   `requirements.txt`.
 - `tests/` + `.github/workflows/test.yaml` — 41 Slack-free tests, run in CI on Python
-  3.11–3.13. `.github/workflows/lint.yaml` runs flake8 (repo `setup.cfg`).
+  3.13. `.github/workflows/lint.yaml` runs flake8 (repo `setup.cfg`).
 - `.env.example` — every config variable, with comments.
 - `Dockerfile`, `docker-compose.yml`, `.dockerignore` — container build (`pip install .`,
   runs `tailgate-bot` as a non-root uid 1000; `tini` as PID 1 for prompt SIGTERM

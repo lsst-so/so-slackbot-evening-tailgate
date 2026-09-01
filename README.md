@@ -78,7 +78,7 @@ pytest
 The suite is Slack-free — it exercises the state machine, the Block Kit builders,
 the two scheduled jobs (with a fake Slack client), the scheduler wiring, and config
 loading. It runs on every push and pull request via `.github/workflows/test.yaml`
-(Python 3.11–3.13). Testing against a real Slack workspace is the manual dry-run in
+(Python 3.13). Testing against a real Slack workspace is the manual dry-run in
 `HANDOFF.md`.
 
 ## Versioning and changelog

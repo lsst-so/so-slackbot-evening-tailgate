@@ -7,7 +7,7 @@ name = "so-slackbot-evening-tailgate"
 dynamic = ["version"]
 description = "Slack bot that coordinates Vera Rubin Observatory's daily Evening Tailgate Meeting."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 license = { text = "GPL-3.0-or-later" }
 dependencies = [
     "slack-bolt>=1.19,<2",
