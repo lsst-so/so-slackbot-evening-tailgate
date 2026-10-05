@@ -8,6 +8,7 @@ Runs a Slack Bolt app in Socket Mode (no public inbound URL needed) that:
 See README.md for setup and DESIGN.md for the full behavior spec.
 """
 import logging
+import os
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
@@ -107,6 +108,11 @@ def handle_confirm(ack, body, client, respond):
 
 def main():
     scheduler = build_scheduler(app.client, cfg, store)
+    memdebug_minutes = int(os.environ.get("TAILGATE_MEMDEBUG_MINUTES", "0") or 0)
+    if memdebug_minutes > 0:
+        from .memdebug import add_memdebug_job
+
+        add_memdebug_job(scheduler, memdebug_minutes)
     scheduler.start()
     logger.info(
         "Scheduler started: reminder at %s, cutoff at %s (%s)",
