@@ -8,9 +8,11 @@ Runs a Slack Bolt app in Socket Mode (no public inbound URL needed) that:
 See README.md for setup and DESIGN.md for the full behavior spec.
 """
 import logging
+import ssl
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+from slack_sdk import WebClient
 
 from .config import load_config
 from .state import StateStore
@@ -23,7 +25,10 @@ logger = logging.getLogger("tailgate_bot")
 
 cfg = load_config()
 store = StateStore(cfg.db_path)
-app = App(token=cfg.slack_bot_token)
+# One shared SSL context for the Web API and every Socket Mode
+# connection. Without it, slack_sdk builds a new context (reloading
+# the CA bundle) on each reconnect and API call (RSO-1006).
+app = App(client=WebClient(token=cfg.slack_bot_token, ssl=ssl.create_default_context()))
 
 
 def _is_authorized(client, user_id: str) -> bool:
